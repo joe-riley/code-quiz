@@ -44,5 +44,26 @@ const states = {
         },
       ],
     },
+    {
+      question: 'This is a second question that will not stump anyone but it should fill up enough space to try using a longer question than "Is this true or false?".',
+      possibleAnswers: [
+        {
+          text: 'Answer 1',
+          isCorrect: false,
+        },
+        {
+          text: 'Answer 2',
+          isCorrect: true,
+        },
+        {
+          text: 'Answer 3',
+          isCorrect: false,
+        },
+        {
+          text: 'Answer 4',
+          isCorrect: false,
+        },
+      ],
+    },
   ]
 }
