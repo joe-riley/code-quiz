@@ -1,9 +1,9 @@
 import { states } from './states.js';
 
 let testState = 'START';
+let currentScore = 0;
 
 const setState = () => {
-    const answersListEl = document.querySelector('#answers');
     let state = {};
     switch(testState) {
         case 'START':
@@ -14,13 +14,13 @@ const setState = () => {
             break;
         case 'PASSED':
             state = states.passed;
-            setHeaderAndQuestion(state.heading, state.paragraph, 0);
+            setHeaderAndQuestion(state.heading, state.paragraph, currentScore);
             setAnswers([], false);
             setButtons(state.buttons);
             break;
         case 'FAILED':
             state = states.failed;
-            setHeaderAndQuestion(state.heading, state.paragraph, 0);
+            setHeaderAndQuestion(state.heading, state.paragraph, currentScore);
             setAnswers([], false);
             setButtons(state.buttons);
             break;
@@ -57,11 +57,11 @@ const setButtons = (buttons) => {
 }
 
 const setAnswers = (answers, show=true) => {
+    const answersListEl = document.querySelector('#answers');
+
     show
         ? answersListEl.style.setProperty('visibility', 'visible')
         : answersListEl.style.setProperty('visibility', 'hidden');
-
-    const answersListEl = document.querySelector('#answers');
 
     answersListEl.innerHTML = '';
 
