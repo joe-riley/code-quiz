@@ -4,8 +4,14 @@ const states = {
     paragraph: 'A quiz on coding by someone who has not learned all of the in and outs of coding in 10 years of trying to learn.',
     button1: 'START'
   },
-  finish: {
-    heading: 'You completed the quiz!',
+  passed: {
+    heading: 'You passed the quiz!',
+    paragraph: 'You scored: ',
+    button1: 'Scoreboard',
+    button2: 'Start Over',
+  },
+  failed: {
+    heading: 'You failed the quiz.',
     paragraph: 'You scored: ',
     button1: 'Scoreboard',
     button2: 'Start Over',
