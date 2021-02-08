@@ -1,46 +1,76 @@
-const testingStates = {
-    START,
-    PASSED,
-    FAILED,
-    QUIT,
-    TIMEOUT,
-    QUESTIONING,
-};
+import { states } from './states.js';
 
-let testState = testingStates.START;
+let testState = 'START';
 
-const setState = (testState) => {
-    const states = states;
-    const questionHeaderEl = document.querySelector('#question_area > h1');
-    const questionEl = document.querySelector('#question');
+const setState = () => {
     const answersListEl = document.querySelector('#answers');
-    const buttonsEl = document.querySelector('#buttons');
     let state = {};
     switch(testState) {
-        case START:
+        case 'START':
             state = states.start;
+            setHeaderAndQuestion(state.heading, state.paragraph);
+            setAnswers([], false);
+            setButtons(state.buttons);
             break;
-        case PASSED:
+        case 'PASSED':
             state = states.passed;
+            setHeaderAndQuestion(state.heading, state.paragraph, 0);
+            setAnswers([], false);
+            setButtons(state.buttons);
             break;
-        case FAILED:
+        case 'FAILED':
             state = states.failed;
+            setHeaderAndQuestion(state.heading, state.paragraph, 0);
+            setAnswers([], false);
+            setButtons(state.buttons);
             break;
-        case QUIT:
-            state = states.quit;
-            break;
-        case TIMEOUT:
+        case 'TIMEOUT':
             state = states.timeout;
+            setHeaderAndQuestion(state.heading, state.paragraph);
+            setAnswers([], false);
+            setButtons(state.buttons);
             break;
-        case QUESTIONING:
+        case 'QUESTIONING':
             state = states.questions;
             break;
     }
 }
 
-const setHeaderAndQuestion(headerText, questionText) {
+const setHeaderAndQuestion = (headerText, questionText, score=-1) => {
     const questionHeaderEl = document.querySelector('#question_area > h1');
     const questionEl = document.querySelector('#question');
+    questionHeaderEl.textContent = headerText;
+    questionEl.textContent = (score >= 0) ? `${questionText} ${score}` : questionText;
+}
+
+const setButtons = (buttons) => {
+    const buttonsEl = document.querySelector('#buttons');
+
+    buttonsEl.innerHTML = '';
+
+    buttons.forEach(button => {
+        const btn = document.createElement('button');
+        btn.textContent = button.text;
+        const listEl = document.createElement('li').appendChild(btn);
+        buttonsEl.appendChild(listEl);
+    });
+}
+
+const setAnswers = (answers, show=true) => {
+    show
+        ? answersListEl.style.setProperty('visibility', 'visible')
+        : answersListEl.style.setProperty('visibility', 'hidden');
+
+    const answersListEl = document.querySelector('#answers');
+
+    answersListEl.innerHTML = '';
+
+    answers.forEach(answer => {
+        const aTag = document.createElement('a');
+        aTag.textContent = answer.text;
+        const listEl = document.createElement('li').appendChild(aTag);
+        answersListEl.appendChild(listEl);
+    });
 
 }
 
@@ -51,13 +81,12 @@ const timmer = (minutes) => {
     }, 1000);
 }
 
-const presentQuestions = () => {
-    const questionArea = document.querySelector('#question_area');
-}
-
 const startQuiz = (event) => {
 
 }
 
 // timmer();
-questionArea.addEventListener('click', startQuiz);
+setState();
+testState = 'TIMEOUT';
+setState();
+// questionArea.addEventListener('click', startQuiz);
