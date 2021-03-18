@@ -5,7 +5,6 @@ const states = {
     buttons: [
       { 
         text: 'START',
-        action: 'startQuiz',
       },
     ],
   },
@@ -17,6 +16,10 @@ const states = {
         text: 'Try Again?',
         action: 'Start',
       },
+      {
+        text: 'Set High Score?',
+        action: 'Set High Score',
+      }
     ],
   },
   failed: {

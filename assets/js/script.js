@@ -2,6 +2,7 @@ import { states } from './states.js';
 
 let testState = 'START';
 let currentScore = 0;
+let currentAnswer = '';
 
 const setState = () => {
     let state = {};
@@ -32,7 +33,7 @@ const setState = () => {
             break;
         case 'QUESTIONING':
             state = states.questioning;
-            questionsLoop(state);
+            questions(state);
             break;
     }
 }
@@ -53,7 +54,13 @@ const setButtons = (buttons) => {
         const btn = document.createElement('button');
         btn.textContent = button.text;
         const listEl = document.createElement('li').appendChild(btn);
-        listEl.addEventListener('click', startQuiz);
+        if (button.text === 'START') {
+            listEl.addEventListener('click', startQuiz);
+        }
+        if (button.text === 'Quit') {
+            listEl.addEventListener('click', quitQuiz);
+        }
+        
         buttonsEl.appendChild(listEl);
     });
 }
@@ -77,38 +84,59 @@ const setAnswers = (answers, show=true) => {
     });
 }
 
-const questionsLoop = (questioning) => {
-    questioning.questions.forEach(question => {
+const questions = (questioning) => {
+    if (questioning.questions.length === 0) {
+        if(currentScore >= 1) {
+            testState = 'PASSED';
+            setState();
+        } else {
+            testState = 'FAILED';
+            setState();
+        }
+    } else {
+        const { question, possibleAnswers } = questioning.questions.shift();
         console.log(question);
-        setHeaderAndQuestion(questioning.heading, question.question);
-        setAnswers(question.possibleAnswers);
+        setHeaderAndQuestion(questioning.heading, question);
+        setAnswers(possibleAnswers);
         setButtons(questioning.buttons);
-    })
+    }
 };
 
-const timmer = (minutes) => {
+const timmer = () => {
     const timeEl = document.querySelector('#time');
-    const interval = setInterval(() => {
+    let interval = setInterval(() => {
+        if (timeEl.innerHTML <= 1) {
+            clearInterval(interval);
+        } 
         timeEl.innerHTML -= 1;
-    }, 1000);
+    }, 10);
 }
 
 const startQuiz = (event) => {
+    setTimmer(500);
+    timmer();
     testState = 'QUESTIONING';
     setState();
-    console.log('quizstarted');
+}
+
+const setTimmer = (seconds) => {
+    const timeEl = document.querySelector('#time');
+    timeEl.innerHTML = 500;
 }
 
 const answerQuestion = (event) => {
     console.log(event.target.value);
+    if(event.target.value === 'true') {
+        currentScore += 1;
+    };
+    setState();
 }
 
 const quitQuiz = (event) => {
-
+    location.reload();
 }
 
 
-// timmer();
 setState();
 testState = 'START';
 setState();
