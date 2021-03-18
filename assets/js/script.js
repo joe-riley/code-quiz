@@ -31,7 +31,8 @@ const setState = () => {
             setButtons(state.buttons);
             break;
         case 'QUESTIONING':
-            state = states.questions;
+            state = states.questioning;
+            questionsLoop(state);
             break;
     }
 }
@@ -52,6 +53,7 @@ const setButtons = (buttons) => {
         const btn = document.createElement('button');
         btn.textContent = button.text;
         const listEl = document.createElement('li').appendChild(btn);
+        listEl.addEventListener('click', startQuiz);
         buttonsEl.appendChild(listEl);
     });
 }
@@ -66,13 +68,23 @@ const setAnswers = (answers, show=true) => {
     answersListEl.innerHTML = '';
 
     answers.forEach(answer => {
-        const aTag = document.createElement('a');
-        aTag.textContent = answer.text;
-        const listEl = document.createElement('li').appendChild(aTag);
+        const btn = document.createElement('button');
+        btn.textContent = answer.text;
+        btn.setAttribute('value', answer.isCorrect);
+        const listEl = document.createElement('li').appendChild(btn);
+        listEl.addEventListener('click', answerQuestion);
         answersListEl.appendChild(listEl);
     });
-
 }
+
+const questionsLoop = (questioning) => {
+    questioning.questions.forEach(question => {
+        console.log(question);
+        setHeaderAndQuestion(questioning.heading, question.question);
+        setAnswers(question.possibleAnswers);
+        setButtons(questioning.buttons);
+    })
+};
 
 const timmer = (minutes) => {
     const timeEl = document.querySelector('#time');
@@ -82,11 +94,22 @@ const timmer = (minutes) => {
 }
 
 const startQuiz = (event) => {
+    testState = 'QUESTIONING';
+    setState();
+    console.log('quizstarted');
+}
+
+const answerQuestion = (event) => {
+    console.log(event.target.value);
+}
+
+const quitQuiz = (event) => {
 
 }
 
+
 // timmer();
 setState();
-testState = 'TIMEOUT';
+testState = 'START';
 setState();
 // questionArea.addEventListener('click', startQuiz);

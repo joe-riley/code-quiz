@@ -5,7 +5,7 @@ const states = {
     buttons: [
       { 
         text: 'START',
-        action: 'Start',
+        action: 'startQuiz',
       },
     ],
   },
@@ -40,6 +40,7 @@ const states = {
     ],
   },
   questioning: {
+    heading: 'Basic JavaScript',
     buttons: [
       { 
         text: 'Quit',
@@ -48,22 +49,22 @@ const states = {
     ],
     questions: [
       {
-        question: 'This is a question that will not stump anyone but it should fill up enough space to try using a longer question than "Is this true or false?".',
+        question: 'This is the first question that will not stump anyone but it should fill up enough space to try using a longer question than "Is this true or false?".',
         possibleAnswers: [
           {
-            text: 'Answer 1',
+            text: '1 Answer 1',
             isCorrect: true,
           },
           {
-            text: 'Answer 2',
+            text: '1 Answer 2',
             isCorrect: false,
           },
           {
-            text: 'Answer 3',
+            text: '1 Answer 3',
             isCorrect: false,
           },
           {
-            text: 'Answer 4',
+            text: '1 Answer 4',
             isCorrect: false,
           },
         ],
@@ -72,19 +73,19 @@ const states = {
         question: 'This is a second question that will not stump anyone but it should fill up enough space to try using a longer question than "Is this true or false?".',
         possibleAnswers: [
           {
-            text: 'Answer 1',
+            text: '2 Answer 1',
             isCorrect: false,
           },
           {
-            text: 'Answer 2',
+            text: '2 Answer 2',
             isCorrect: true,
           },
           {
-            text: 'Answer 3',
+            text: '2 Answer 3',
             isCorrect: false,
           },
           {
-            text: 'Answer 4',
+            text: '2 Answer 4',
             isCorrect: false,
           },
         ],
