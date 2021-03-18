@@ -2,7 +2,7 @@ import { states } from './states.js';
 
 let testState = 'START';
 let currentScore = 0;
-let currentAnswer = '';
+let timeIt;
 
 const setState = () => {
     let state = {};
@@ -54,10 +54,15 @@ const setButtons = (buttons) => {
         const btn = document.createElement('button');
         btn.textContent = button.text;
         const listEl = document.createElement('li').appendChild(btn);
-        if (button.text === 'START') {
+        if (button.action === 'startQuiz') {
             listEl.addEventListener('click', startQuiz);
         }
-        if (button.text === 'Quit') {
+        else if (button.text === 'Quit') {
+            listEl.addEventListener('click', quitQuiz);
+        }
+        else if (button.action === 'tryAgain') {
+            testState = 'START';
+            setState();
             listEl.addEventListener('click', quitQuiz);
         }
         
@@ -93,6 +98,7 @@ const questions = (questioning) => {
             testState = 'FAILED';
             setState();
         }
+        clearInterval(timeIt);
     } else {
         const { question, possibleAnswers } = questioning.questions.shift();
         console.log(question);
@@ -110,11 +116,13 @@ const timmer = () => {
         } 
         timeEl.innerHTML -= 1;
     }, 10);
+    return interval;
 }
 
 const startQuiz = (event) => {
+    currentScore = 0;
     setTimmer(500);
-    timmer();
+    timeIt = timmer();
     testState = 'QUESTIONING';
     setState();
 }
@@ -136,8 +144,25 @@ const quitQuiz = (event) => {
     location.reload();
 }
 
+const openEls = document.querySelectorAll("[data-open]");
+const isVisible = "is-visible";
+
+for(const el of openEls) {
+  el.addEventListener("click", function() {
+    const modalId = this.dataset.open;
+    document.getElementById(modalId).classList.add(isVisible);
+  });
+}
+
+const closeEls = document.querySelectorAll("[data-close]");
+
+for (const el of closeEls) {
+  el.addEventListener("click", function() {
+    this.parentElement.parentElement.parentElement.classList.remove(isVisible);
+  });
+}
+
 
 setState();
 testState = 'START';
 setState();
-// questionArea.addEventListener('click', startQuiz);
