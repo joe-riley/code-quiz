@@ -19,7 +19,7 @@ const states = {
       },
       {
         text: 'Set High Score?',
-        action: 'Set High Score',
+        action: 'setScore',
       }
     ],
   },

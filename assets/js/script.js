@@ -57,15 +57,12 @@ const setButtons = (buttons) => {
         if (button.action === 'startQuiz') {
             listEl.addEventListener('click', startQuiz);
         }
-        else if (button.text === 'Quit') {
+        else if (button.action === 'quitQuiz') {
             listEl.addEventListener('click', quitQuiz);
         }
-        else if (button.action === 'tryAgain') {
-            testState = 'START';
-            setState();
-            listEl.addEventListener('click', quitQuiz);
+        else if (button.action === 'setScore') {
+            listEl.addEventListener('click', setScore);
         }
-        
         buttonsEl.appendChild(listEl);
     });
 }
@@ -113,6 +110,12 @@ const timmer = () => {
     let interval = setInterval(() => {
         if (timeEl.innerHTML <= 1) {
             clearInterval(interval);
+            if(currentScore < 1) {
+              testState = 'FAILED';
+            } else if (currentScore >= 1) {
+              testState = 'PASSED';
+            }
+            setState();
         } 
         timeEl.innerHTML -= 1;
     }, 10);
@@ -140,6 +143,21 @@ const answerQuestion = (event) => {
     setState();
 }
 
+const setScore = (event) => {
+  event.preventDefault();
+  document.querySelector('#modal2').classList.add(isVisible);
+  document.querySelector('#score').addEventListener('onsubmit', storeScore);
+}
+
+const storeScore = () => {
+  let initials = document.querySelector('#initials').value;
+  console.log(initials)
+  let scoresEl = document.querySelector('#scores');
+  let liEl = document.createElement('li');
+  liEl.textContent = `${initials}: ${currentScore}`;
+  scoresEl.appendChild(liEl);
+}
+
 const quitQuiz = (event) => {
     location.reload();
 }
@@ -149,8 +167,8 @@ const isVisible = "is-visible";
 
 for(const el of openEls) {
   el.addEventListener("click", function() {
-    const modalId = this.dataset.open;
-    document.getElementById(modalId).classList.add(isVisible);
+      const modalId = this.dataset.open;
+      document.getElementById(modalId).classList.add(isVisible);
   });
 }
 
@@ -158,7 +176,7 @@ const closeEls = document.querySelectorAll("[data-close]");
 
 for (const el of closeEls) {
   el.addEventListener("click", function() {
-    this.parentElement.parentElement.parentElement.classList.remove(isVisible);
+      this.parentElement.parentElement.parentElement.classList.remove(isVisible);
   });
 }
 
